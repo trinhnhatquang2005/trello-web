@@ -17,5 +17,18 @@ export default defineConfig([
       globals: globals.browser,
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['@mui/*/*/*', '@mui/*/*/*/*'],
+              message: 'MUI imports must not exceed 3 levels deep. Use "@mui/material/Button" instead of "@mui/material/Button/something/deeper".',
+            },
+          ],
+        },
+      ],
+    },
   },
 ])
