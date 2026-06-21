@@ -1,23 +1,27 @@
 import { createTheme } from '@mui/material/styles';
-import { red } from '@mui/material/colors';
 
-// Create a theme instance.
 const theme = createTheme({
-    palette: {
-        mode: 'dark',
-        primary: {
-            main: '#556cd6',
+    trello: {
+        appBarHeight: '48px',
+        boardBarHeight: '58px',
+        boardContentHeight: 'calc(100vh - 48px - 58px)',
+    },
+    colorSchemes: {
+        light: {
+            palette: {
+                primary: { main: '#1976d2' },
+                background: { default: '#f5f5f5', paper: '#ffffff' },
+                text: { primary: '#111', secondary: '#555' },
+            },
         },
-        secondary: {
-            main: '#19857b',
+        dark: {
+            palette: {
+                primary: { main: '#90caf9' },
+                background: { default: '#121212', paper: '#1e1e1e' },
+                text: { primary: '#eee', secondary: '#aaa' },
+            },
         },
-        error: {
-            main: red.A400,
-        },
-        text: {
-            secondary: red.A200,
-        },
-    }
+    },
 });
 
 export default theme;
