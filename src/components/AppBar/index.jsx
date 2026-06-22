@@ -15,6 +15,7 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import Tooltip from "@mui/material/Tooltip";
 import HelpIcon from '@mui/icons-material/Help';
 import Profiles from "./Menus/Profiles";
+import LibraryAddIcon from '@mui/icons-material/LibraryAdd'
 
 export default function AppBar() {
     return (
@@ -41,7 +42,7 @@ export default function AppBar() {
                         <Recent />
                         <Started />
                         <Templates />
-                        <Button variant="outlined">Create</Button>
+                        <Button variant="outlined" startIcon={<LibraryAddIcon />}>Create</Button>
                     </Box>
 
 
