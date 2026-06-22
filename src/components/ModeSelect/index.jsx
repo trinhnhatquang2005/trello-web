@@ -20,7 +20,7 @@ export default function ModeSelect() {
     if (!mode) return null;
 
     return (
-        <FormControl size="small" sx={{ minWidth: 120 }}>
+        <FormControl size="small">
             <InputLabel>Chế độ</InputLabel>
             <Select
                 value={mode}
