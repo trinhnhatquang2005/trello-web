@@ -24,7 +24,9 @@ export default function AppBar() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            px: 2
+            px: 2,
+            gap: 2,
+            overflowX: 'auto',
         }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                 <AppsIcon sx={{ color: 'primary.main' }} />
@@ -33,15 +35,20 @@ export default function AppBar() {
                     <Typography variant='span' sx={{ fontWeight: 'bold', color: 'primary.main', fontSize: '1.2rem' }}>
                         Trello
                     </Typography>
-                    <Workspaces />
-                    <Recent />
-                    <Started />
-                    <Templates />
-                    <Button variant="outlined">Create</Button>
+
+                    <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1 }}>
+                        <Workspaces />
+                        <Recent />
+                        <Started />
+                        <Templates />
+                        <Button variant="outlined">Create</Button>
+                    </Box>
+
+
                 </Box>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <TextField id="outlined-basic" label="Search..." type="search" size="small" />
+                <TextField id="outlined-basic" label="Search..." type="search" size="small" sx={{ minWidth: 120 }} />
                 <ModeSelect />
 
 

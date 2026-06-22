@@ -62,6 +62,26 @@ const theme = createTheme({
                 })
             }
         },
+        MuiCssBaseline: {
+            styleOverrides: {
+                body: {
+                    // Chiều cao thanh scrollbar ngang
+                    '*::-webkit-scrollbar': {
+                        width: '8px',
+                        height: '8px',
+                    },
+                    // Phần kéo (thumb)
+                    '*::-webkit-scrollbar-thumb': {
+                        backgroundColor: '#888',
+                        borderRadius: '8px',
+                    },
+                    // Hover vào thumb
+                    '*::-webkit-scrollbar-thumb:hover': {
+                        backgroundColor: '#555',
+                    },
+                },
+            },
+        },
     },
 });
 
