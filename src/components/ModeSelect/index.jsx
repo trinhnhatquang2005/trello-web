@@ -21,11 +21,27 @@ export default function ModeSelect() {
 
     return (
         <FormControl size="small" sx={{ minWidth: 120 }}>
-            <InputLabel>Chế độ</InputLabel>
+            <InputLabel
+                sx={{
+                    color: 'white',
+                    '&.Mui-focused': {
+                        color: 'white',
+                    }
+                }}
+            >
+                Chế độ
+            </InputLabel>
             <Select
                 value={mode}
                 label="Chế độ"
                 onChange={(e) => setMode(e.target.value)}
+                sx={{
+                    color: 'white',
+                    '.MuiOutlinedInput-notchedOutline': { borderColor: 'white' },
+                    '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'white' },
+                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: 'white' },
+                    '.MuiSvgIcon-root': { color: 'white' }
+                }}
                 renderValue={(selected) => {
                     const { icon, label } = OPTIONS.find((o) => o.value === selected);
                     return (

@@ -7,20 +7,22 @@ const theme = createTheme({
         boardContentHeight: 'calc(100vh - 58px - 60px)',
     },
     colorSchemes: {
-        light: {
-            palette: {
-                primary: { main: '#1976d2' },
-                background: { default: '#f5f5f5', paper: '#ffffff' },
-                text: { primary: '#111', secondary: '#555' },
-            },
-        },
-        dark: {
-            palette: {
-                primary: { main: '#90caf9' },
-                background: { default: '#121212', paper: '#1e1e1e' },
-                text: { primary: '#eee', secondary: '#aaa' },
-            },
-        },
+        // light: {
+        //     palette: {
+        //         primary: { main: '#1976d2' },
+        //         background: { default: '#f5f5f5', paper: '#ffffff' },
+        //         text: { primary: '#111', secondary: '#555' },
+        //     },
+        // },
+        // dark: {
+        //     palette: {
+        //         primary: { main: '#90caf9' },
+        //         background: { default: '#121212', paper: '#1e1e1e' },
+        //         text: { primary: '#eee', secondary: '#aaa' },
+        //     },
+        // },
+        light: true,
+        dark: true,
     },
     components: {
         // Name of the component
@@ -30,36 +32,49 @@ const theme = createTheme({
                 root: {
                     // Some CSS
                     textTransform: 'none',
+                    borderWidth: '0.5px',
+                    '&:hover': {
+                        borderWidth: '1px',
+                    },
+                    '&.Mui-focused': {
+                        borderWidth: '1px',
+                    }
                 },
             },
         },
         MuiInputLabel: {
             styleOverrides: {
                 // Name of the slot
-                root: ({ theme }) => ({
-                    // Some CSS
+                root: {
                     fontSize: '0.875rem',
-                    color: theme.palette.primary.main,
-                }),
+                }
             },
         },
         MuiOutlinedInput: {
             styleOverrides: {
-                root: ({ theme }) => ({
-                    color: theme.palette.primary.main,
+                root: {
+                    // color: theme.palette.primary.main,
                     fontSize: '0.875rem',
-                    '.MuiOutlinedInput-notchedOutline': {
-                        borderColor: theme.palette.primary.light,
-                    },
-                    '&:hover': {
-                        '.MuiOutlinedInput-notchedOutline': {
-                            borderColor: theme.palette.primary.main,
-                        }
-                    },
+                    // '.MuiOutlinedInput-notchedOutline': {
+                    //     borderColor: theme.palette.primary.light,
+                    // },
+                    // '&:hover': {
+                    //     '.MuiOutlinedInput-notchedOutline': {
+                    //         borderColor: theme.palette.primary.main,
+                    //     }
+                    // },
                     '& fieldset': {
+                        borderWidth: '0.5px !important',
+                    },
+                    '&:hover fieldset': {
+                        borderWidth: '1px !important',
+                    },
+                    '&.Mui-focused fieldset': {
                         borderWidth: '1px !important',
                     }
-                })
+                }
+
+
             }
         },
         MuiCssBaseline: {
@@ -72,12 +87,12 @@ const theme = createTheme({
                     },
                     // Phần kéo (thumb)
                     '*::-webkit-scrollbar-thumb': {
-                        backgroundColor: '#888',
+                        backgroundColor: '#dcdde1',
                         borderRadius: '8px',
                     },
                     // Hover vào thumb
                     '*::-webkit-scrollbar-thumb:hover': {
-                        backgroundColor: '#555',
+                        backgroundColor: 'white',
                     },
                 },
             },

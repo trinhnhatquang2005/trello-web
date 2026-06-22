@@ -36,7 +36,7 @@ export default function Profiles() {
                     aria-haspopup="true"
                     aria-expanded={open}
                 >
-                    <Avatar sx={{ width: 30, height: 30 }} alt="MTP" src="https://cdn-media.sforum.vn/storage/app/media/thanhhuyen/%E1%BA%A3nh%20s%C6%A1n%20t%C3%B9ng%20mtp/anh-son-tung-mtp-thumb.jpg" />
+                    <Avatar sx={{ width: 36, height: 36 }} alt="MTP" src="https://cdn-media.sforum.vn/storage/app/media/thanhhuyen/%E1%BA%A3nh%20s%C6%A1n%20t%C3%B9ng%20mtp/anh-son-tung-mtp-thumb.jpg" />
                 </IconButton>
             </Tooltip>
             <Menu
