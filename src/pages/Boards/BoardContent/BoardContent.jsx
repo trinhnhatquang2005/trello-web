@@ -5,11 +5,11 @@ import { DndContext, PointerSensor, useSensor, useSensors, MouseSensor, TouchSen
 import { useState, useEffect } from "react"
 import { arrayMove } from "@dnd-kit/sortable"
 export default function BoardContent({ board }) {
-    const pointerSensor = useSensor(PointerSensor, {
-        activationConstraint: {
-            distance: 10, // 10px là bắt đầu kéo
-        },
-    })
+    // const pointerSensor = useSensor(PointerSensor, {
+    //     activationConstraint: {
+    //         distance: 10, // 10px là bắt đầu kéo
+    //     },
+    // })
 
     const mouseSensor = useSensor(MouseSensor, {
         activationConstraint: {
