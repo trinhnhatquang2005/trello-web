@@ -1,7 +1,7 @@
 import ListColumns from "./ListColumns/ListColumns"
 import Box from "@mui/material/Box"
 import { mapOrder } from "~/utils/sorts"
-import { DndContext, PointerSensor, useSensor, useSensors, MouseSensor, TouchSensor, DragOverlay, defaultDropAnimationSideEffects } from "@dnd-kit/core"
+import { DndContext, PointerSensor, useSensor, useSensors, MouseSensor, TouchSensor, DragOverlay, defaultDropAnimationSideEffects, closestCorners } from "@dnd-kit/core"
 import { useState, useEffect } from "react"
 import { cloneDeep } from "lodash"
 import { arrayMove } from "@dnd-kit/sortable"
@@ -167,6 +167,14 @@ export default function BoardContent({ board }) {
     return (
         <DndContext
             sensors={sensors}
+
+            // Thuật toán phát hiện va chạm (nếu không có nó thì card với cover lớn sẽ không kéo qua Column được vì lúc này nó đang bị conflict giữa card và column), chúng ta sẽ dùng closestCorners thay vì closestCenter
+            // https://docs.dndkit.com/api-documentation/context-provider/collision-detection-algorithms
+            // Update video 37: nếu chỉ dùng closestCorners sẽ có bug flickering + sai lệch dữ liệu (vui lòng xem video 37 sẽ rõ)
+            // collisionDetection={closestCorners}
+
+            // Tự custom nâng cao thuật toán phát hiện va chạm (video fix bug số 37)
+            collisionDetection={closestCorners}
             onDragStart={hanldeDragStart}
             onDragOver={handleDragOver}
             onDragEnd={handleDragEnd}
