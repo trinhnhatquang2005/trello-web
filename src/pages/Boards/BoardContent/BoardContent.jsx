@@ -70,7 +70,7 @@ export default function BoardContent({ board }) {
         if (!active || !over) return
 
         const { id: activeDraggingCardId, data: { current: activeDraggingCardData } } = active
-        const { id: overCardId, data: { current: overCardData } } = over
+        const { id: overCardId } = over
 
         //Tim 2 cai column theo cardid
         const activeColumn = findColumByCardId(activeDraggingCardId)
@@ -104,6 +104,7 @@ export default function BoardContent({ board }) {
                     //Kiem tra xem card co ton tai trong column dich khong
                     nextOverColumn.cards = nextOverColumn.cards.filter(card => card._id !== activeDraggingCardId)
 
+                    //Thêm card vào vị trí mới
                     nextOverColumn.cards = nextOverColumn.cards.toSpliced(newCardIndex, 0, activeDraggingCardData)
 
                     //cap nhat column order ids
