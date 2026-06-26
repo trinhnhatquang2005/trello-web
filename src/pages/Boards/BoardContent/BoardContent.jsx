@@ -120,6 +120,7 @@ export default function BoardContent({ board }) {
     }
 
     const hanldeDragStart = (event) => {
+        console.log("event ne thg lon: ", event)
         setActiveDragItemId(event?.active?.id)
         setActiveDragItemType(event?.active?.data?.current?.columnId ? ACTIVE_DRAG_ITEM_TYPE.CARD : ACTIVE_DRAG_ITEM_TYPE.COLUMN)
         setActiveDragItemData(event?.active?.data?.current)
@@ -136,7 +137,7 @@ export default function BoardContent({ board }) {
         if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN) return
 
         //Neu keo card thi xu ly them de co the keo card qua lai giua cac columns
-        // console.log('handleDragOver: ', event)
+        console.log('handleDragOver: ', event)
         const { active, over } = event
         if (!active || !over) return
 
@@ -156,6 +157,7 @@ export default function BoardContent({ board }) {
     }
 
     const handleDragEnd = (event) => {
+        console.log(event)
         const { active, over } = event
 
         //nếu không kéo qua column nào cả 
@@ -168,6 +170,8 @@ export default function BoardContent({ board }) {
             //Tim 2 cai column theo cardid
             const activeColumn = findColumByCardId(activeDraggingCardId)
             const overColumn = findColumByCardId(overCardId)
+            console.log('activeColumn: ', activeColumn)
+            console.log('overColumn: ', overColumn)
 
             if (!activeColumn || !overColumn) return
 
@@ -175,7 +179,6 @@ export default function BoardContent({ board }) {
                 moveCardBetweenDifferentColumns(overColumn, overCardId, active, over, activeColumn, activeDraggingCardId, activeDraggingCardData)
 
             } else {
-                console.log('keo card trong cung column')
                 //lấy vị trí cũ (từ thằng oldColumnWhenDraggingCard)
                 const oldCardsIndex = oldColumnWhenDraggingCard?.cards?.findIndex(c => c._id === activeDragItemId)
                 //lấy vị trí mới (từ thằng over)
