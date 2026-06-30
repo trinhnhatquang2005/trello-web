@@ -183,7 +183,7 @@ export default function BoardContent({ board }) {
                 const oldCardsIndex = oldColumnWhenDraggingCard?.cards?.findIndex(c => c._id === activeDragItemId)
                 //lấy vị trí mới (từ thằng over)
                 const newCardsIndex = overColumn?.cards?.findIndex(c => c._id === overCardId)
-                //sắp xếp lại mảng
+                //sắp xếp lại mảng đã đổi chỗ khi di chuyển card trong cùng column
                 const dndOrderedCards = arrayMove(oldColumnWhenDraggingCard?.cards, oldCardsIndex, newCardsIndex)
 
                 setOrderedColumns(prevColumns => {
@@ -193,7 +193,7 @@ export default function BoardContent({ board }) {
                     //cập nhật lại card order ids
                     targetColumn.cards = dndOrderedCards
                     targetColumn.cardOrderIds = dndOrderedCards.map(card => card._id)
-
+                    //find chỉ tìm đúng column cần sửa, còn targetColumn.cards = dndOrderedCards mới là dòng thực sự thay thế danh sách card bằng thứ tự mới.
                     return nextColumns
                 })
             }
