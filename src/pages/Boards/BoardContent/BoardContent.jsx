@@ -2,12 +2,13 @@ import ListColumns from "./ListColumns/ListColumns"
 import Box from "@mui/material/Box"
 import { mapOrder } from "~/utils/sorts"
 import { generatePlaceholderCard } from "~/utils/formatters"
-import { DndContext, PointerSensor, useSensor, useSensors, MouseSensor, TouchSensor, DragOverlay, defaultDropAnimationSideEffects, closestCorners, pointerWithin, getFirstCollision } from "@dnd-kit/core"
+import { DndContext, PointerSensor, useSensor, useSensors, DragOverlay, defaultDropAnimationSideEffects, closestCorners, pointerWithin, getFirstCollision } from "@dnd-kit/core"
 import { useState, useEffect, useCallback, useRef } from "react"
 import { cloneDeep, isEmpty } from "lodash"
 import { arrayMove } from "@dnd-kit/sortable"
 import Card from "./ListColumns/Column/ListCards/Card/Card"
 import Column from "./ListColumns/Column/Column"
+import { MouseSensor, TouchSensor } from "~/customLibraries/DndKitSensors"
 const ACTIVE_DRAG_ITEM_TYPE = {
     COLUMN: 'ACTIVE_DRAG_ITEM_TYPE_COLUMN',
     CARD: 'ACTIVE_DRAG_ITEM_TYPE_CARD'
