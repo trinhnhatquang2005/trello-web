@@ -23,6 +23,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import TextField from "@mui/material/TextField";
 import CloseIcon from "@mui/icons-material/Close";
+import { toast } from "react-toastify";
 
 function Column({ column }) {
     const id = useId();
@@ -46,7 +47,7 @@ function Column({ column }) {
     const [newCardTitle, setNewCardTitle] = useState('')
     const addNewCard = () => {
         if (newCardTitle.trim() === '') {
-            console.log("hay nhap gia tri colume")
+            toast.error("hay nhap gia tri card", { theme: "colored" })
             return
         }
         //Goi API o day

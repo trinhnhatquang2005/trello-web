@@ -6,6 +6,7 @@ import { SortableContext, horizontalListSortingStrategy } from "@dnd-kit/sortabl
 import { useState } from "react";
 import TextField from '@mui/material/TextField'
 import CloseIcon from '@mui/icons-material/Close'
+import { toast } from "react-toastify";
 
 function ListColumns({ columns }) {
     const [openNewColumnForm, setOpenNewColumnForm] = useState(false)
@@ -15,7 +16,7 @@ function ListColumns({ columns }) {
     const [newColumnTitle, setNewColumnTitle] = useState('')
     const addNewColumn = () => {
         if (newColumnTitle.trim() === '') {
-            console.log("hay nhap gia tri colume")
+            toast.error("hay nhap gia tri colume", { theme: "colored" })
             return
         }
         //Goi API o day
