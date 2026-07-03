@@ -25,7 +25,7 @@ import TextField from "@mui/material/TextField";
 import CloseIcon from "@mui/icons-material/Close";
 import { toast } from "react-toastify";
 
-function Column({ column }) {
+function Column({ column, createNewCard }) {
     const id = useId();
     const buttonId = `${id}-button`;
     const menuId = `${id}-menu`;
@@ -45,14 +45,28 @@ function Column({ column }) {
 
 
     const [newCardTitle, setNewCardTitle] = useState('')
+
     const addNewCard = () => {
-        if (newCardTitle.trim() === '') {
-            toast.error("hay nhap gia tri card", { theme: "colored" })
+        if (!newCardTitle) {
+            toast.error('Please enter Card Title!', { position: 'bottom-right' })
             return
         }
-        //Goi API o day
 
-        // Dong lai trang thai them Card moi va Clear Input
+        // Tạo dữ liệu Card để gọi API
+        const newCardData = {
+            title: newCardTitle,
+            columnId: column._id
+        }
+
+        /**
+         * Gọi lên props function createNewCard nằm ở component cha cao nhất (boards/_id.jsx)
+         * Lưu ý: Về sau ở học phần MERN Stack Advance nâng cao học trực tiếp mình sẽ với mình thì chúng ta sẽ đưa dữ liệu Board ra ngoài Redux Global Store,
+         * và lúc này chúng ta có thể gọi luôn API ở đây là xong thay vì phải lần lượt gọi ngược lên những component cha phía bên trên. (Đối với component con nằm càng sâu thì càng khổ :D)
+         * - Với việc sử dụng Redux như vậy thì code sẽ Clean chuẩn chỉnh hơn rất nhiều.
+         */
+        createNewCard(newCardData)
+
+        // Đóng trạng thái thêm Card mới & Clear Input
         toggleOpenNewCardForm()
         setNewCardTitle('')
     }

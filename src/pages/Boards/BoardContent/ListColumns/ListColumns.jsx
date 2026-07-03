@@ -8,20 +8,33 @@ import TextField from '@mui/material/TextField'
 import CloseIcon from '@mui/icons-material/Close'
 import { toast } from "react-toastify";
 
-function ListColumns({ columns }) {
+function ListColumns({ columns, createNewColumn, createNewCard }) {
     const [openNewColumnForm, setOpenNewColumnForm] = useState(false)
     const toggleOpenNewColumnForm = () => setOpenNewColumnForm(!openNewColumnForm)
 
 
     const [newColumnTitle, setNewColumnTitle] = useState('')
+
     const addNewColumn = () => {
-        if (newColumnTitle.trim() === '') {
-            toast.error("hay nhap gia tri colume", { theme: "colored" })
+        if (!newColumnTitle) {
+            toast.error('Please enter Column Title!')
             return
         }
-        //Goi API o day
 
-        // Dong lai trang thai them Column moi va Clear Input
+        // Tạo dữ liệu Column để gọi API
+        const newColumnData = {
+            title: newColumnTitle
+        }
+
+        /**
+         * Gọi lên props function createNewColumn nằm ở component cha cao nhất (boards/_id.jsx)
+         * Lưu ý: Về sau ở học phần MERN Stack Advance nâng cao học trực tiếp mình sẽ với mình thì chúng ta sẽ đưa dữ liệu Board ra ngoài Redux Global Store,
+         * Thì lúc này chúng ta có thể gọi luôn API ở đây là xong thay vì phải lần lượt gọi ngược lên những component cha phía bên trên. (Đối với component con nằm càng sâu thì càng khổ :D)
+         * - Với việc sử dụng Redux như vậy thì code sẽ Clean chuẩn chỉnh hơn rất nhiều.
+         */
+        createNewColumn(newColumnData)
+
+        // Đóng trạng thái thêm Column mới & Clear Input
         toggleOpenNewColumnForm()
         setNewColumnTitle('')
     }
@@ -46,7 +59,7 @@ function ListColumns({ columns }) {
                 }
             }}>
                 {columns.map(column =>
-                    <Column key={column._id} column={column} />
+                    <Column key={column._id} column={column} createNewCard={createNewCard} />
                 )}
 
 
