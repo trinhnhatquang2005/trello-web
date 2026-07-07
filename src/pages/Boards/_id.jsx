@@ -53,6 +53,7 @@ export default function Board() {
             ...newCardData,
             boardId: board._id
         })
+        console.log("createNewCard ne th lon", createdCard)
 
         // Cập nhật state board
         // Phía Front-end chúng ta phải tự làm đúng lại state data board (thay vì phải gọi lại api fetchBoardDetailsAPI)
