@@ -5,28 +5,42 @@ import AppBar from "~/components/AppBar/AppBar";
 import BoardBar from "./BoardBar/BoardBar";
 import { mockData } from '~/apis/mock-data'
 import { useEffect, useState } from "react"
-import { fetchBoardDetailsAPI, createNewColumnAPI, createNewCardAPI, updateBoardDetailsAPI } from "~/apis"
+import { fetchBoardDetailsAPI, createNewColumnAPI, createNewCardAPI, updateBoardDetailsAPI, updateColumnDetailsAPI } from "~/apis"
 import { generatePlaceholderCard } from "~/utils/formatters"
 import { isEmpty } from "lodash";
+import { mapOrder } from "~/utils/sorts"
+import Box from '@mui/material/Box'
+import CircularProgress from '@mui/material/CircularProgress'
+import Typography from '@mui/material/Typography'
 
 export default function Board() {
     const [board, setBoard] = useState(null)
 
     useEffect(() => {
+        // Tạm thời fix cứng boardId, flow chuẩn chỉnh về sau khi học nâng cao trực tiếp với mình là chúng ta sẽ sử dụng react-router-dom để lấy chuẩn boardId từ URL. Chi tiết hơn xem tại playlist nâng cao này: https://youtube.com/playlist?list=PLP6tw4Zpj-RJbPQfTZ0eCAXH_mHQiuf2G
         const boardId = '6a44b4595f226356d79def9b'
+        // Call API
         fetchBoardDetailsAPI(boardId).then(board => {
+
+            // Sắp xếp thứ tự các column luôn ở đây trước khi đưa dữ liệu xuống bên dưới các component con (video 71 đã giải thích lý do ở phần Fix bug quan trọng)
+            board.columns = mapOrder(board.columns, board.columnOrderIds, '_id')
+
             board.columns.forEach(column => {
                 // Khi f5 trang web thì cần xử lý vấn đề kéo thả vào một column rỗng (Nhớ lại video 37.2, code hiện tại là video 69)
                 if (isEmpty(column.cards)) {
                     column.cards = [generatePlaceholderCard(column)]
                     column.cardOrderIds = [generatePlaceholderCard(column)._id]
+                } else {
+                    // Sắp xếp thứ tự các cards luôn ở đây trước khi đưa dữ liệu xuống bên dưới các component con (video 71 đã giải thích lý do ở phần Fix bug quan trọng)
+                    column.cards = mapOrder(column.cards, column.cardOrderIds, '_id')
                 }
-
             })
+
             setBoard(board)
         })
     }, [])
 
+    console.log("cardOrderIds o BE tra ve: ", board)
     // Func này có nhiệm vụ gọi API tạo mới Column và làm lại dữ liệu State Board
     const createNewColumn = async (newColumnData) => {
         const createdColumn = await createNewColumnAPI({
@@ -75,9 +89,9 @@ export default function Board() {
     }
 
     /**
-   * Func này có nhiệm vụ gọi API và xử lý khi kéo thả Column xong xuôi
-   * Chỉ cần gọi API để cập nhật mảng columnOrderIds của Board chứa nó (thay đổi vị trí trong board)
-   */
+    * Func này có nhiệm vụ gọi API và xử lý khi kéo thả Column xong xuôi
+    * Chỉ cần gọi API để cập nhật mảng columnOrderIds của Board chứa nó (thay đổi vị trí trong board)
+    */
     const moveColumns = (dndOrderedColumns) => {
         // Update cho chuẩn dữ liệu state Board
         const dndOrderedColumnsIds = dndOrderedColumns.map(c => c._id)
@@ -90,12 +104,45 @@ export default function Board() {
         updateBoardDetailsAPI(newBoard._id, { columnOrderIds: dndOrderedColumnsIds })
     }
 
+    /**
+      * Khi di chuyển card trong cùng Column:
+      * Chỉ cần gọi API để cập nhật mảng cardOrderIds của Column chứa nó (thay đổi vị trí trong mảng)
+      */
+    const moveCardInTheSameColumn = (dndOrderedCards, dndOrderedCardIds, columnId) => {
+        // Update cho chuẩn dữ liệu state Board
+        const newBoard = { ...board }
+        const columnToUpdate = newBoard.columns.find(column => column._id === columnId)
+        if (columnToUpdate) {
+            columnToUpdate.cards = dndOrderedCards
+            columnToUpdate.cardOrderIds = dndOrderedCardIds
+        }
+        setBoard(newBoard)
 
+        // Gọi API update Column
+        updateColumnDetailsAPI(columnId, { cardOrderIds: dndOrderedCardIds })
+    }
+
+
+    if (!board) {
+        return (
+            <Box sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 2,
+                width: '100vw',
+                height: '100vh'
+            }}>
+                <CircularProgress />
+                <Typography>Loading Board...</Typography>
+            </Box>
+        )
+    }
     return (
         <Container disableGutters maxWidth={false} sx={{ height: '100vh' }}>
             <AppBar />
             <BoardBar board={board} />
-            <BoardContent board={board} createNewColumn={createNewColumn} createNewCard={createNewCard} moveColumns={moveColumns} />
+            <BoardContent board={board} createNewColumn={createNewColumn} createNewCard={createNewCard} moveColumns={moveColumns} moveCardInTheSameColumn={moveCardInTheSameColumn} />
         </Container>
     )
 }

@@ -8,12 +8,14 @@ import { cloneDeep, isEmpty } from "lodash"
 import { arrayMove } from "@dnd-kit/sortable"
 import Card from "./ListColumns/Column/ListCards/Card/Card"
 import Column from "./ListColumns/Column/Column"
+
+
 const ACTIVE_DRAG_ITEM_TYPE = {
     COLUMN: 'ACTIVE_DRAG_ITEM_TYPE_COLUMN',
     CARD: 'ACTIVE_DRAG_ITEM_TYPE_CARD'
 }
 
-export default function BoardContent({ board, createNewColumn, createNewCard, moveColumns }) {
+export default function BoardContent({ board, createNewColumn, createNewCard, moveColumns, moveCardInTheSameColumn }) {
     // const pointerSensor = useSensor(PointerSensor, {
     //     activationConstraint: {
     //         distance: 10, // 10px là bắt đầu kéo
@@ -47,9 +49,17 @@ export default function BoardContent({ board, createNewColumn, createNewCard, mo
     const lastOverId = useRef(null)
 
     useEffect(() => {
-        setOrderedColumns(mapOrder(board?.columns, board?.columnOrderIds, '_id'))
+        setOrderedColumns(board?.columns)
 
     }, [board])
+
+    //     useEffect(() => {
+    //     const sortedColumns = mapOrder(board?.columns, board?.columnOrderIds, '_id')
+    //     sortedColumns.forEach(column => {
+    //         column.cards = mapOrder(column.cards, column.cardOrderIds, '_id')
+    //     })
+    //     setOrderedColumns(sortedColumns)
+    // }, [board])
 
     const findColumByCardId = (cardId) => {
         // Đoạn này cần lưu ý, nên dùng c.cards thay vì c.cardOrderIds 
@@ -170,8 +180,6 @@ export default function BoardContent({ board, createNewColumn, createNewCard, mo
             //Tim 2 cai column theo cardid
             const activeColumn = findColumByCardId(activeDraggingCardId)
             const overColumn = findColumByCardId(overCardId)
-            console.log('activeColumn: ', activeColumn)
-            console.log('overColumn: ', overColumn)
 
             if (!activeColumn || !overColumn) return
 
@@ -196,6 +204,10 @@ export default function BoardContent({ board, createNewColumn, createNewCard, mo
                     //find chỉ tìm đúng column cần sửa, còn targetColumn.cards = dndOrderedCards mới là dòng thực sự thay thế danh sách card bằng thứ tự mới.
                     return nextColumns
                 })
+                //call api
+                moveCardInTheSameColumn(dndOrderedCards, dndOrderedCards.map(card => card._id), oldColumnWhenDraggingCard._id)
+
+
             }
 
 
