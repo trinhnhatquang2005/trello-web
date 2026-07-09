@@ -14,4 +14,7 @@ export default defineConfig({
       '~': new URL('./src', import.meta.url).pathname
     }
   },
+  define: {
+    'import.meta.env.BUILD_MODE': JSON.stringify(process.env.BUILD_MODE)
+  }
 })
