@@ -21,7 +21,9 @@ export default function BoardContent({
     createNewCard,
     moveColumns,
     moveCardInTheSameColumn,
-    moveCardToDifferentColumn
+    moveCardToDifferentColumn,
+    deleteColumnDetails
+
 }) {
     // const pointerSensor = useSensor(PointerSensor, {
     //     activationConstraint: {
@@ -340,7 +342,9 @@ export default function BoardContent({
                 <ListColumns
                     columns={orderedColumns}
                     createNewColumn={createNewColumn}
-                    createNewCard={createNewCard} />
+                    createNewCard={createNewCard}
+                    deleteColumnDetails={deleteColumnDetails}
+                />
                 <DragOverlay dropAnimation={customDropAnimation}>
                     {!activeDragItemType && null}
                     {(activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN) && <Column column={activeDragItemData} />}

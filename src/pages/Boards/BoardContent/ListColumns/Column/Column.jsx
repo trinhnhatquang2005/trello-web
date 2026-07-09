@@ -18,14 +18,15 @@ import ContentPaste from "@mui/icons-material/ContentPaste";
 import AddCardIcon from '@mui/icons-material/AddCard';
 import DragHandleIcon from "@mui/icons-material/DragHandle";
 import ListCards from "./ListCards/ListCards";
-import { mapOrder } from "~/utils/sorts"
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import TextField from "@mui/material/TextField";
 import CloseIcon from "@mui/icons-material/Close";
 import { toast } from "react-toastify";
+import { useConfirm } from 'material-ui-confirm'
 
-function Column({ column, createNewCard }) {
+
+function Column({ column, createNewCard, deleteColumnDetails }) {
     const id = useId();
     const buttonId = `${id}-button`;
     const menuId = `${id}-menu`;
@@ -82,6 +83,35 @@ function Column({ column, createNewCard }) {
         height: "100%",
         opacity: isDragging ? 0.5 : undefined
     }
+
+    // Xử lý xóa một Column và Cards bên trong nó
+    const confirmDeleteColumn = useConfirm()
+    const handleDeleteColumn = () => {
+        confirmDeleteColumn({
+            title: 'Delete Column?',
+            description: 'This action will permanently delete your Column and its Cards! Are you sure?',
+            confirmationText: 'Confirm',
+            cancellationText: 'Cancel'
+            // buttonOrder: ['confirm', 'cancel']
+            // content: 'test content hehe',
+            // allowClose: false,
+            // dialogProps: { maxWidth: 'lg' },
+            // cancellationButtonProps: { color: 'primary' },
+            // confirmationButtonProps: { color: 'success', variant: 'outlined' },
+            // description: 'Phải nhập chữ trungquandev thì mới được Confirm =))',
+            // confirmationKeyword: 'trungquandev'
+        }).then(({ confirmed }) => {
+            /**
+             * Gọi lên props function deleteColumnDetails nằm ở component cha cao nhất (boards/_id.jsx)
+             * Lưu ý: Về sau ở học phần MERN Stack Advance nâng cao học trực tiếp mình sẽ với mình thì chúng ta sẽ đưa dữ liệu Board ra ngoài Redux Global Store,
+             * và lúc này chúng ta có thể gọi luôn API ở đây là xong thay vì phải lần lượt gọi ngược lên những component cha phía bên trên. (Đối với component con nằm càng sâu thì càng khổ :D)
+             * - Với việc sử dụng Redux như vậy thì code sẽ Clean chuẩn chỉnh hơn rất nhiều.
+             */
+            if (!confirmed) return
+            deleteColumnDetails(column._id)
+        }).catch(() => { })
+    }
+
     return (
         <div ref={setNodeRef}
             style={dndKitColumnStyles}
@@ -129,14 +159,23 @@ function Column({ column, createNewCard }) {
                             anchorEl={anchorEl}
                             open={open}
                             onClose={handleClose}
+                            onClick={handleClose}
                             slotProps={{
                                 list: {
                                     'aria-labelledby': buttonId,
                                 },
                             }}
                         >
-                            <MenuItem>
-                                <ListItemIcon><AddCardIcon fontSize="small" /></ListItemIcon>
+                            <MenuItem
+                                onClick={toggleOpenNewCardForm}
+                                sx={{
+                                    '&:hover': {
+                                        color: 'success.light',
+                                        '& .add-card-icon': { color: 'success.light' }
+                                    }
+                                }}
+                            >
+                                <ListItemIcon><AddCardIcon className="add-card-icon" fontSize="small" /></ListItemIcon>
                                 <ListItemText>Add new card</ListItemText>
                             </MenuItem>
                             <MenuItem>
@@ -152,8 +191,16 @@ function Column({ column, createNewCard }) {
                                 <ListItemText>Paste</ListItemText>
                             </MenuItem>
                             <Divider />
-                            <MenuItem>
-                                <ListItemIcon><DeleteForeverIcon fontSize="small" /></ListItemIcon>
+                            <MenuItem
+                                onClick={handleDeleteColumn}
+                                sx={{
+                                    '&:hover': {
+                                        color: 'warning.dark',
+                                        '& .delete-forever-icon': { color: 'warning.dark' }
+                                    }
+                                }}
+                            >
+                                <ListItemIcon><DeleteForeverIcon className="delete-forever-icon" fontSize="small" /></ListItemIcon>
                                 <ListItemText>Remove this column</ListItemText>
                             </MenuItem>
                             <MenuItem>
