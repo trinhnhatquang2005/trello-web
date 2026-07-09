@@ -6,7 +6,7 @@ let apiRoot = ''
 
 // Môi trường Dev sẽ chạy localhost với port 8017
 if (import.meta.env.BUILD_MODE === 'dev') {
-    apiRoot = 'http://localhost:8017'
+    apiRoot = 'https://trello-api-z3fo.onrender.com'
 }
 
 // Môi trường Production sẽ cần api endpoint chuẩn của các bạn
