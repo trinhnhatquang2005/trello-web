@@ -5,7 +5,7 @@ import AppBar from "~/components/AppBar/AppBar";
 import BoardBar from "./BoardBar/BoardBar";
 import { mockData } from '~/apis/mock-data'
 import { useEffect, useState } from "react"
-import { fetchBoardDetailsAPI, createNewColumnAPI, createNewCardAPI, updateBoardDetailsAPI, updateColumnDetailsAPI } from "~/apis"
+import { fetchBoardDetailsAPI, createNewColumnAPI, createNewCardAPI, updateBoardDetailsAPI, updateColumnDetailsAPI, moveCardToDifferentColumnAPI } from "~/apis"
 import { generatePlaceholderCard } from "~/utils/formatters"
 import { isEmpty } from "lodash";
 import { mapOrder } from "~/utils/sorts"
@@ -40,7 +40,6 @@ export default function Board() {
         })
     }, [])
 
-    console.log("cardOrderIds o BE tra ve: ", board)
     // Func này có nhiệm vụ gọi API tạo mới Column và làm lại dữ liệu State Board
     const createNewColumn = async (newColumnData) => {
         const createdColumn = await createNewColumnAPI({
@@ -122,6 +121,27 @@ export default function Board() {
         updateColumnDetailsAPI(columnId, { cardOrderIds: dndOrderedCardIds })
     }
 
+    const moveCardToDifferentColumn = (currentCardId, prevColumnId, nextColumnId, dndOrderedColumns) => {
+        const dndOrderedColumnsIds = dndOrderedColumns.map(c => c._id)
+        const newBoard = { ...board }
+        newBoard.columns = dndOrderedColumns
+        newBoard.columnOrderIds = dndOrderedColumnsIds
+        setBoard(newBoard)
+
+        // Gọi API xử lý phía BE
+        let prevCardOrderIds = dndOrderedColumns.find(c => c._id === prevColumnId)?.cardOrderIds
+        // Xử lý vấn đề khi kéo Card cuối cùng ra khỏi Column, Column rỗng sẽ có placeholder card, cần xóa nó đi trước khi gửi dữ liệu lên cho phía BE. (Nhớ lại video 37.2)
+        if (prevCardOrderIds[0].includes('placeholder-card')) prevCardOrderIds = []
+
+        moveCardToDifferentColumnAPI({
+            currentCardId,
+            prevColumnId,
+            prevCardOrderIds,
+            nextColumnId,
+            nextCardOrderIds: dndOrderedColumns.find(c => c._id === nextColumnId)?.cardOrderIds
+        })
+    }
+
 
     if (!board) {
         return (
@@ -142,7 +162,13 @@ export default function Board() {
         <Container disableGutters maxWidth={false} sx={{ height: '100vh' }}>
             <AppBar />
             <BoardBar board={board} />
-            <BoardContent board={board} createNewColumn={createNewColumn} createNewCard={createNewCard} moveColumns={moveColumns} moveCardInTheSameColumn={moveCardInTheSameColumn} />
+            <BoardContent board={board}
+                createNewColumn={createNewColumn}
+                createNewCard={createNewCard}
+                moveColumns={moveColumns}
+                moveCardInTheSameColumn={moveCardInTheSameColumn}
+                moveCardToDifferentColumn={moveCardToDifferentColumn}
+            />
         </Container>
     )
 }

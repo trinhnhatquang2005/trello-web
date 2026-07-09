@@ -15,7 +15,14 @@ const ACTIVE_DRAG_ITEM_TYPE = {
     CARD: 'ACTIVE_DRAG_ITEM_TYPE_CARD'
 }
 
-export default function BoardContent({ board, createNewColumn, createNewCard, moveColumns, moveCardInTheSameColumn }) {
+export default function BoardContent({
+    board,
+    createNewColumn,
+    createNewCard,
+    moveColumns,
+    moveCardInTheSameColumn,
+    moveCardToDifferentColumn
+}) {
     // const pointerSensor = useSensor(PointerSensor, {
     //     activationConstraint: {
     //         distance: 10, // 10px là bắt đầu kéo
@@ -74,7 +81,8 @@ export default function BoardContent({ board, createNewColumn, createNewCard, mo
         over,
         activeColumn,
         activeDraggingCardId,
-        activeDraggingCardData
+        activeDraggingCardData,
+        triggerFrom
     ) => {
         setOrderedColumns(prevColumns => {
             //1.Tìm vị trí overCard trong column dich
@@ -123,6 +131,14 @@ export default function BoardContent({ board, createNewColumn, createNewCard, mo
                 nextOverColumn.cardOrderIds = nextOverColumn.cards.map(card => card._id)
             }
 
+            if (triggerFrom === 'handleDragEnd') {
+                moveCardToDifferentColumn(
+                    activeDraggingCardId,
+                    oldColumnWhenDraggingCard._id,
+                    nextOverColumn._id,
+                    nextColumns
+                )
+            }
             //return
             return nextColumns
 
@@ -161,7 +177,7 @@ export default function BoardContent({ board, createNewColumn, createNewCard, mo
         if (!activeColumn || !overColumn) return
 
         if (activeColumn._id !== overColumn._id) {
-            moveCardBetweenDifferentColumns(overColumn, overCardId, active, over, activeColumn, activeDraggingCardId, activeDraggingCardData)
+            moveCardBetweenDifferentColumns(overColumn, overCardId, active, over, activeColumn, activeDraggingCardId, activeDraggingCardData, "handleDragOver")
         }
 
     }
@@ -184,7 +200,7 @@ export default function BoardContent({ board, createNewColumn, createNewCard, mo
             if (!activeColumn || !overColumn) return
 
             if (oldColumnWhenDraggingCard._id !== overColumn._id) {
-                moveCardBetweenDifferentColumns(overColumn, overCardId, active, over, activeColumn, activeDraggingCardId, activeDraggingCardData)
+                moveCardBetweenDifferentColumns(overColumn, overCardId, active, over, activeColumn, activeDraggingCardId, activeDraggingCardData, "handleDragEnd")
 
             } else {
                 //lấy vị trí cũ (từ thằng oldColumnWhenDraggingCard)
