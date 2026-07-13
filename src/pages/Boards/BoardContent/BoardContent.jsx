@@ -1,6 +1,5 @@
 import ListColumns from "./ListColumns/ListColumns"
 import Box from "@mui/material/Box"
-import { mapOrder } from "~/utils/sorts"
 import { generatePlaceholderCard } from "~/utils/formatters"
 import { DndContext, PointerSensor, useSensor, useSensors, MouseSensor, TouchSensor, DragOverlay, defaultDropAnimationSideEffects, closestCorners, pointerWithin, getFirstCollision } from "@dnd-kit/core"
 import { useState, useEffect, useCallback, useRef } from "react"
@@ -17,12 +16,10 @@ const ACTIVE_DRAG_ITEM_TYPE = {
 
 export default function BoardContent({
     board,
-    createNewColumn,
-    createNewCard,
     moveColumns,
     moveCardInTheSameColumn,
     moveCardToDifferentColumn,
-    deleteColumnDetails
+
 
 }) {
     // const pointerSensor = useSensor(PointerSensor, {
@@ -341,9 +338,6 @@ export default function BoardContent({
             }}>
                 <ListColumns
                     columns={orderedColumns}
-                    createNewColumn={createNewColumn}
-                    createNewCard={createNewCard}
-                    deleteColumnDetails={deleteColumnDetails}
                 />
                 <DragOverlay dropAnimation={customDropAnimation}>
                     {!activeDragItemType && null}
