@@ -542,6 +542,11 @@
     redux-thunk "^3.1.0"
     reselect "^5.1.0"
 
+"@remix-run/router@1.23.3":
+  version "1.23.3"
+  resolved "https://registry.yarnpkg.com/@remix-run/router/-/router-1.23.3.tgz#957c098d4393d301a8aa7dccf3ef28ea5430e36a"
+  integrity sha512-4An71tdz9X8+3sI4Qqqd2LWd9vS39J7sqd9EU4Scw7TJE/qB10Flv/UuqbPVgfQV9XoK8Np6jNquZitnZq5i+Q==
+
 "@rolldown/binding-android-arm64@1.0.3":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@rolldown/binding-android-arm64/-/binding-android-arm64-1.0.3.tgz#54ce8f8382213f4a314a0c2f7ba83f81ffeae592"
@@ -1753,6 +1758,11 @@ react-dom@^19.2.6:
   dependencies:
     scheduler "^0.27.0"
 
+react-hook-form@^7.49.3:
+  version "7.81.0"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.81.0.tgz#003f1b4fd13102ab1142aec220572401ad1edac4"
+  integrity sha512-ocbmr2p5KBMoAfj4WCUvped33lVi1Kd5DuDUvQDnB6VEAacOjPI/jMbtDdbhco4y9ct4xUuCmMY0b/C9L0QHjw==
+
 react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
@@ -1770,6 +1780,21 @@ react-redux@^9.1.0:
   dependencies:
     "@types/use-sync-external-store" "^0.0.6"
     use-sync-external-store "^1.4.0"
+
+react-router-dom@^6.21.3:
+  version "6.30.4"
+  resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-6.30.4.tgz#f7167bf3da6c7d9132130ea985dd06def25e84d5"
+  integrity sha512-q4HvNl+mmDdkS0g+MqiBZNteQJCuimWoOyHMy4T/RQLAn9Z29+E91QXRaxOujeMl2HTzRSS0KFPd7lxX3PjV0Q==
+  dependencies:
+    "@remix-run/router" "1.23.3"
+    react-router "6.30.4"
+
+react-router@6.30.4:
+  version "6.30.4"
+  resolved "https://registry.yarnpkg.com/react-router/-/react-router-6.30.4.tgz#638f35176527bd243d96d81d35d33b757bad46c2"
+  integrity sha512-SVUsDe+DybHM/WmYKIVYhZh1o5Dcuf16yM6WjG02Q9XVFMZIJyHYhwrr6bFBXZkVP6z69kNkMyBCujt8FaFLJA==
+  dependencies:
+    "@remix-run/router" "1.23.3"
 
 react-toastify@^11.1.0:
   version "11.1.0"
