@@ -20,13 +20,21 @@ import {
   EMAIL_RULE_MESSAGE
 } from '~/utils/validators'
 import FieldErrorAlert from '~/components/Form/FieldErrorAlert'
+import { registerUserAPI } from '~/apis'
+import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
 
 function RegisterForm() {
   const { register, handleSubmit, formState: { errors }, watch } = useForm()
-
+  const navigate = useNavigate()
   const submitRegister = (data) => {
-    //logic login api 
-    console.log("data ne be: ", data)
+    const { email, password } = data
+    toast.promise(
+      registerUserAPI({ email, password }),
+      { pending: 'Registration is in progress...' }
+    ).then(user => {
+      navigate(`/login?registeredEmail=${user.email}`)
+    })
   }
   return (
     <form onSubmit={handleSubmit(submitRegister)}>

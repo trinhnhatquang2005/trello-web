@@ -7,6 +7,7 @@ import SvgIcon from '@mui/material/SvgIcon'
 import PlanetSvg from '~/assets/404/planet.svg?react'
 import AstronautSvg from '~/assets/404/astronaut.svg?react'
 import { Link } from 'react-router-dom'
+import particles from '~/assets/404/particles.png'
 
 function NotFound() {
   return (
@@ -24,7 +25,7 @@ function NotFound() {
         animation: 'stars 12s linear infinite alternate',
         width: '100%',
         height: '100%',
-        backgroundImage: 'url("src/assets/404/particles.png")',
+        backgroundImage: `url(${particles})`,
         backgroundSize: 'contain',
         backgroundRepeat: 'repeat',
         backgroundPosition: 'center',
@@ -50,7 +51,7 @@ function NotFound() {
           }}>
             &nbsp;SPACE&nbsp;
           </Typography>
-          &nbsp;<Typography variant="span" sx={{ color: '#fdba26', fontWeight: 500 }}>TrungQuanDev</Typography>?<br />Hmm, looks like that page doesn&apos;t exist.
+          &nbsp;<Typography variant="span" sx={{ color: '#fdba26', fontWeight: 500 }}>NhatQuang Dev</Typography>?<br />Hmm, looks like that page doesn&apos;t exist.
         </Typography>
         <Box sx={{ width: '390px', height: '390px', position: 'relative' }}>
           <SvgIcon component={AstronautSvg} inheritViewBox sx={{
