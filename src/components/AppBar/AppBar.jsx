@@ -20,6 +20,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import InputAdornment from '@mui/material/InputAdornment'
 import CloseIcon from '@mui/icons-material/Close';
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function AppBar() {
     const [searchValue, setSearchValue] = useState('')
@@ -40,26 +41,25 @@ export default function AppBar() {
         }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                 <AppsIcon sx={{ color: 'white' }} />
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                    <SvgIcon component={TrelloLogo} fontSize='small' inheritViewBox sx={{ color: 'white' }} />
-                    <Typography variant='span' sx={{ fontWeight: 'bold', color: 'white', fontSize: '1.2rem' }}>
-                        Trello
-                    </Typography>
-
-                    <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1 }}>
-                        <Workspaces />
-                        <Recent />
-                        <Started />
-                        <Templates />
-                        <Button
-                            sx={{ color: 'white' }}
-                            startIcon={<LibraryAddIcon />}
-                        >
-                            Create
-                        </Button>
+                <Link to="/">
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                        <SvgIcon component={TrelloLogo} fontSize='small' inheritViewBox sx={{ color: 'white' }} />
+                        <Typography variant='span' sx={{ fontWeight: 'bold', color: 'white', fontSize: '1.2rem' }}>
+                            Trello
+                        </Typography>
                     </Box>
-
-
+                </Link>
+                <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1 }}>
+                    <Workspaces />
+                    <Recent />
+                    <Started />
+                    <Templates />
+                    <Button
+                        sx={{ color: 'white' }}
+                        startIcon={<LibraryAddIcon />}
+                    >
+                        Create
+                    </Button>
                 </Box>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
