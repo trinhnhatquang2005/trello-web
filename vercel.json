@@ -1,6 +1,10 @@
 {
     "rewrites": [
         {
+            "source": "/v1/(.*)",
+            "destination": "https://trello-api-z3fo.onrender.com/v1/$1"
+        },
+        {
             "source": "/(.*)",
             "destination": "/index.html"
         }
