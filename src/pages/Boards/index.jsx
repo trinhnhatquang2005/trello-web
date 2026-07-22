@@ -61,6 +61,11 @@ function Boards() {
    */
   const page = parseInt(query.get('page') || '1', 10)
 
+  const updateStateData = (res) => {
+    setBoards(res.boards || [])
+    setTotalBoards(res.totalBoards || 0)
+  }
+
   useEffect(() => {
     // Fake tạm 16 cái item thay cho boards
     // [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
@@ -70,12 +75,14 @@ function Boards() {
 
     // Gọi API lấy danh sách boards ở đây...
     fetchBoardsAPI(location.search)
-      .then((res) => {
-        setBoards(res.boards || [])
-        setTotalBoards(res.totalBoards || 0)
-      })
+      .then(updateStateData)
     // ...
   }, [location.search])
+
+  const afterCreateNewBoard = () => {
+    // Đơn giản là cứ fetch lại danh sách board tương tự trong useEffect
+    fetchBoardsAPI(location.search).then(updateStateData)
+  }
 
   // Lúc chưa tồn tại boards > đang chờ gọi api thì hiện loading
   if (!boards) {
@@ -104,7 +111,7 @@ function Boards() {
             </Stack>
             <Divider sx={{ my: 1 }} />
             <Stack direction="column" spacing={1}>
-              <SidebarCreateBoardModal />
+              <SidebarCreateBoardModal afterCreateNewBoard={afterCreateNewBoard} />
             </Stack>
           </Grid>
 
@@ -118,42 +125,41 @@ function Boards() {
 
             {/* Trường hợp gọi API và có boards trong Database trả về thì render danh sách boards */}
             {boards?.length > 0 &&
-              <Grid container spacing={2}>
+              // display: 'flex' + flexWrap: 'wrap' → các card xếp ngang, hết chỗ tự xuống hàng
+              // gap: 2 → khoảng cách đều 16px giữa các card (cả ngang lẫn dọc)
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
                 {boards.map(b =>
-                  <Grid size={{ xs: 2, sm: 3, md: 4 }} key={b._id}>
-                    <Card sx={{ width: '250px' }}>
-                      {/* Ý tưởng mở rộng về sau làm ảnh Cover cho board nhé */}
-                      {/* <CardMedia component="img" height="100" image="https://picsum.photos/100" /> */}
-                      <Box sx={{ height: '50px', backgroundColor: randomColor() }}></Box>
+                  // Không cần Grid nữa. Card tự giữ 250px, đứng sát nhau.
+                  <Card key={b._id} sx={{ width: '250px' }}>
+                    <Box sx={{ height: '50px', backgroundColor: randomColor() }}></Box>
 
-                      <CardContent sx={{ p: 1.5, '&:last-child': { p: 1.5 } }}>
-                        <Typography gutterBottom variant="h6" component="div">
-                          {b.title}
-                        </Typography>
-                        <Typography
-                          variant="body2"
-                          color="text.secondary"
-                          sx={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
-                          {b.description}
-                        </Typography>
-                        <Box
-                          component={Link}
-                          to={`/boards/${b._id}`}
-                          sx={{
-                            mt: 1,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'flex-end',
-                            color: 'primary.main',
-                            '&:hover': { color: 'primary.light' }
-                          }}>
-                          Go to board <ArrowRightIcon fontSize="small" />
-                        </Box>
-                      </CardContent>
-                    </Card>
-                  </Grid>
+                    <CardContent sx={{ p: 1.5, '&:last-child': { p: 1.5 } }}>
+                      <Typography gutterBottom variant="h6" component="div">
+                        {b.title}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+                        {b.description}
+                      </Typography>
+                      <Box
+                        component={Link}
+                        to={`/boards/${b._id}`}
+                        sx={{
+                          mt: 1,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'flex-end',
+                          color: 'primary.main',
+                          '&:hover': { color: 'primary.light' }
+                        }}>
+                        Go to board <ArrowRightIcon fontSize="small" />
+                      </Box>
+                    </CardContent>
+                  </Card>
                 )}
-              </Grid>
+              </Box>
             }
 
             {/* Trường hợp gọi API và có totalBoards trong Database trả về thì render khu vực phân trang  */}
