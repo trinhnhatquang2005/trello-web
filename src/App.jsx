@@ -26,7 +26,7 @@ export default function App() {
 
   return (
     <Routes>
-      <Route path="/" element={<Navigate to='/boards/6a44b4595f226356d79def9b' replace={true} />} />
+      <Route path="/" element={<Navigate to='/boards' replace={true} />} />
 
       {/* Protected Routes (Hiểu đơn giản trong dự án của chúng ta là những route chỉ cho truy cập sau khi đã login) */}
       <Route element={<ProtectedRoute user={currentUser} />}>
